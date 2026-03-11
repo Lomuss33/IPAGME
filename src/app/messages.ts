@@ -1,0 +1,16 @@
+export const messages = {
+  brand: "IPAGME",
+  prompt: "Network address?",
+  answerLabel: "Network address",
+  answerPlaceholder: "192.168.54.192",
+  submit: "Check",
+  next: "Next",
+  loadingEngine: "Booting engine...",
+  loadingQuestion: "New subnet...",
+  visualizerTitle: "Split Visualizer",
+  calculatorTitle: "Subnet Calculator",
+  calculatorPlaceholder: "10.44.199.3/20",
+  calculatorAction: "Calculate",
+  powerTitle: "2^x Table",
+  powerSubtitle: "Fast decimal lookup for subnet math",
+} as const;
