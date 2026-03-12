@@ -34,11 +34,14 @@ export function QuizCard({
 }: QuizCardProps) {
   return (
     <section className="quiz-card">
+      <div className="quiz-card__titlebar">
+        <h2>Main quiz</h2>
+      </div>
+
       <StatBoard stats={stats} status={status} onDifficultyChange={onDifficultyChange} embedded />
 
       <div className="quiz-card__header">
         <div>
-          <p className="eyebrow">Main quiz</p>
           <h2>{messages.prompt}</h2>
         </div>
         <div className="quiz-card__badge">{question ? `${question.ip}/${question.prefix}` : "Waiting..."}</div>

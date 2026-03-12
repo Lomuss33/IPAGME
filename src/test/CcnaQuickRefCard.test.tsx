@@ -17,9 +17,6 @@ describe("CcnaQuickRefCard", () => {
     expect(screen.getByText("FE80::/10")).toBeInTheDocument();
     expect(screen.getByText("OSPF AD")).toBeInTheDocument();
     expect(screen.getByText("110")).toBeInTheDocument();
-    expect(screen.getByText("This vs that")).toBeInTheDocument();
-    expect(screen.getByText("TCP vs UDP")).toBeInTheDocument();
-    expect(screen.getByText("Reliable vs low overhead")).toBeInTheDocument();
     expect(screen.getByText("BPDU guard")).toBeInTheDocument();
     expect(screen.getByText("Err-disable edge")).toBeInTheDocument();
     expect(screen.getByText("Longest match")).toBeInTheDocument();

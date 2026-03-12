@@ -55,17 +55,6 @@ const sections = [
     ],
   },
   {
-    title: "This vs that",
-    rows: [
-      { label: "TCP vs UDP", value: "Reliable vs low overhead" },
-      { label: "Trunk vs Access", value: "Many VLANs vs one VLAN" },
-      { label: "Static vs Dynamic", value: "Manual vs learned routes" },
-      { label: "NAT vs PAT", value: "One-to-one vs many-to-one" },
-      { label: "Std vs Ext ACL", value: "Source only vs full match" },
-      { label: "HSRP vs VRRP", value: "Cisco vs open FHRP" },
-    ],
-  },
-  {
     title: "Switching",
     rows: [
       { label: "Native VLAN", value: "1" },
@@ -127,29 +116,25 @@ export function CcnaQuickRefCard() {
     <section className="tool-card tool-card--quickref">
       <div className="tool-card__header">
         <div>
-          <p className="eyebrow">Helper</p>
           <h3>CCNA Quick Ref</h3>
         </div>
       </div>
 
-      <div className="helper-scroll-shell">
-        <div className="helper-scroll-shell__info">Scroll</div>
-        <div className="helper-scroll-shell__pane">
-          <div className="quickref-grid">
-            {sections.map((section) => (
-              <article className="quickref-group" key={section.title}>
-                <strong className="quickref-group__title">{section.title}</strong>
-                <div className="quickref-group__rows">
-                  {section.rows.map((row) => (
-                    <div className="quickref-row" key={row.label}>
-                      <span>{row.label}</span>
-                      <strong>{row.value}</strong>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
+      <div className="helper-card__body">
+        <div className="quickref-grid">
+          {sections.map((section) => (
+            <article className="quickref-group" key={section.title}>
+              <strong className="quickref-group__title">{section.title}</strong>
+              <div className="quickref-group__rows">
+                {section.rows.map((row) => (
+                  <div className="quickref-row" key={row.label}>
+                    <span>{row.label}</span>
+                    <strong>{row.value}</strong>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>

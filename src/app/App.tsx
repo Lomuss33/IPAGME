@@ -3,6 +3,7 @@ import type { KeyboardEvent } from "react";
 import { messages } from "@/app/messages";
 import { loadSessionStats, saveSessionStats } from "@/app/storage";
 import type { AnswerResult, CalculatorResult, Difficulty, HelperTab, PowerTableRow, QuizQuestion, SessionStats } from "@/app/types";
+import { CcnaCompareCard } from "@/components/CcnaCompareCard";
 import { CcnaQuickRefCard } from "@/components/CcnaQuickRefCard";
 import { IpTermsCard } from "@/components/IpTermsCard";
 import { makeScoreIncrement, nextSeed } from "@/app/utils";
@@ -212,15 +213,16 @@ export function App() {
             />
           </aside>
 
+          <div className="workspace-grid__full">
+            <NetworkWindow />
+          </div>
+
           <section className="workspace-grid__helpers helper-grid">
             <PowerTableCard rows={powerRows} visibleBits={powerBits} onVisibleBitsChange={setPowerBits} />
             <IpTermsCard question={question} />
             <CcnaQuickRefCard />
+            <CcnaCompareCard />
           </section>
-
-          <div className="workspace-grid__full">
-            <NetworkWindow />
-          </div>
         </main>
       </div>
     </div>

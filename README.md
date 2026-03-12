@@ -94,6 +94,10 @@ Push to `main` and GitHub Actions will:
 3. build the app
 4. publish `dist/` to GitHub Pages
 
+The Vite build uses a relative base path so the static bundle works on GitHub project pages, custom domains, and local static previews without rewriting `/IPAGME/...` asset URLs.
+
+If GitHub Pages shows a white screen, open the browser devtools network tab first. The usual cause is missing JS or CSS assets from a wrong base path, which prevents React from mounting at all.
+
 ## Maintainer notes
 
 Use [MAINTAINING.md](MAINTAINING.md) for:

@@ -1,0 +1,56 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  fill="none"
+>
+  <defs>
+    <linearGradient id="bg" x1="8" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0b2334" />
+      <stop offset="1" stop-color="#113f58" />
+    </linearGradient>
+    <linearGradient id="wire" x1="15" y1="14" x2="49" y2="49" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4dd9ff" />
+      <stop offset="1" stop-color="#ff8a3d" />
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#bg)" />
+  <path
+    d="M16 16H48M16 24H40M24 40H48M16 48H48M16 16V48M24 16V40M40 24V48M48 16V48"
+    stroke="rgba(255,255,255,0.15)"
+    stroke-width="1"
+    stroke-linecap="round"
+  />
+  <g filter="url(#glow)">
+    <path
+      d="M20 18L32 30M44 20L32 30M20 44L32 34M44 44L32 34"
+      stroke="url(#wire)"
+      stroke-width="2.5"
+      stroke-linecap="round"
+    />
+  </g>
+  <circle cx="32" cy="32" r="11.5" fill="#f4fbff" />
+  <text
+    x="32"
+    y="36.2"
+    text-anchor="middle"
+    font-family="Segoe UI, Arial, sans-serif"
+    font-size="13"
+    font-weight="800"
+    fill="#0a2433"
+  >IP</text>
+  <circle cx="20" cy="18" r="4.2" fill="#4dd9ff" />
+  <circle cx="44" cy="20" r="4.2" fill="#ff8a3d" />
+  <circle cx="20" cy="44" r="4.2" fill="#4dd9ff" />
+  <circle cx="44" cy="44" r="4.2" fill="#ff8a3d" />
+  <circle cx="20" cy="18" r="1.8" fill="#ffffff" fill-opacity="0.85" />
+  <circle cx="44" cy="20" r="1.8" fill="#ffffff" fill-opacity="0.85" />
+  <circle cx="20" cy="44" r="1.8" fill="#ffffff" fill-opacity="0.85" />
+  <circle cx="44" cy="44" r="1.8" fill="#ffffff" fill-opacity="0.85" />
+</svg>

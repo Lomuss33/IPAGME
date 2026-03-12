@@ -101,3 +101,4 @@ Run this after significant UI, engine, or build changes.
 - The repo intentionally does not commit generated wasm artifacts.
 - The app depends on the C++ engine for quiz logic; do not duplicate subnet logic in TypeScript unless there is a strong reason.
 - If the public interface of the wasm payloads changes, update both the TypeScript types and the native tests in the same change.
+- The Vite `base` is intentionally set to `./` so GitHub Pages does not hardcode project-path asset URLs. If the deployed page is white, check for 404s on the built JS and CSS files before debugging React or wasm.

@@ -30,27 +30,23 @@ export function IpTermsCard({ question }: IpTermsCardProps) {
     <section className="tool-card tool-card--terms">
       <div className="tool-card__header">
         <div>
-          <p className="eyebrow">Helper</p>
           <h3>IP Terms</h3>
         </div>
         {question ? <div className="tool-card__tag">{question.ip}/{question.prefix}</div> : null}
       </div>
 
       {question ? (
-        <div className="helper-scroll-shell">
-          <div className="helper-scroll-shell__info">Scroll</div>
-          <div className="helper-scroll-shell__pane">
-            <div className="terms-grid">
-              {rows.map((row) => (
-                <article className="terms-row" key={row.label}>
-                  <div>
-                    <span>{row.label}</span>
-                    <p>{row.copy}</p>
-                  </div>
-                  <strong>{row.value}</strong>
-                </article>
-              ))}
-            </div>
+        <div className="helper-card__body">
+          <div className="terms-grid">
+            {rows.map((row) => (
+              <article className="terms-row" key={row.label}>
+                <div>
+                  <span>{row.label}</span>
+                  <p>{row.copy}</p>
+                </div>
+                <strong>{row.value}</strong>
+              </article>
+            ))}
           </div>
         </div>
       ) : (

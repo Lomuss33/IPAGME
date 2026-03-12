@@ -23,10 +23,6 @@ export function StatBoard({ stats, status, onDifficultyChange, embedded = false 
       <div className="hud-panel__header">
         <div className="hud-panel__lead">
           <div className="status-pill status-pill--compact">{status}</div>
-          <div>
-            <p className="eyebrow">Session HUD</p>
-            <h2>Subnet console</h2>
-          </div>
         </div>
         <div className="difficulty-picker" aria-label="Difficulty picker">
           {Object.entries(difficultyLabels).map(([value, label]) => (
