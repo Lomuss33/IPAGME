@@ -49,19 +49,22 @@ describe("NetworkWindow", () => {
     setViewportWidth(defaultInnerWidth);
   });
 
-  it("renders the ARP-focused default story, compact picker, controls, and 3x3 board", () => {
+  it("renders the DHCP-focused default story, curated picker, controls, and 3x3 board", () => {
     render(<NetworkWindow />);
 
     expect(screen.getByText("Network Window")).toBeInTheDocument();
     expect(screen.getByText("How IP moves traffic")).toBeInTheDocument();
-    expect(screen.getByText("IP role: ARP ties an IPv4 address to the next-hop MAC on the local segment.")).toBeInTheDocument();
-    expect(screen.getByText("ARP finds the gateway MAC")).toBeInTheDocument();
-    expect(screen.getByText("The PC resolves the local gateway before it can send an off-subnet packet.")).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: "Protocol story" })).toHaveValue("arp");
+    expect(screen.getByText("IP role: DHCP gives the client usable IP settings before normal traffic starts.")).toBeInTheDocument();
+    expect(screen.getByText("DHCP hands the phone a lease")).toBeInTheDocument();
+    expect(screen.getByText("The phone asks the LAN for an address, gateway, and DNS settings.")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Protocol story" })).toHaveValue("dhcp");
     expect(screen.getByRole("option", { name: "DHCP" })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "SSH" })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "OSPF" })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: "RADIUS" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "IPsec" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Ping" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Web" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "RADIUS" })).not.toBeInTheDocument();
     expect(screen.getByTestId("network-play")).toBeInTheDocument();
     expect(screen.getByTestId("network-step")).toBeInTheDocument();
     expect(screen.getAllByTestId("network-window-cell")).toHaveLength(9);
@@ -97,17 +100,17 @@ describe("NetworkWindow", () => {
     expect(screen.getByText((content) => content.includes("[router] OSPF hello keeps adjacency up"))).toBeInTheDocument();
   });
 
-  it("starts playback at the first ARP frame", () => {
+  it("starts playback at the first DHCP frame", () => {
     setViewportWidth(1280);
     render(<NetworkWindow />);
 
     click(screen.getByTestId("network-play"));
 
-    expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("ARP");
-    expect(screen.getByTestId("device-status-pc")).toHaveTextContent("TX ARP");
-    expect(screen.getByTestId("device-status-homeRouter")).toHaveTextContent("RX ARP");
-    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[pc] who-has 192.168.10.1?");
+    expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "1-2");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("DISC");
+    expect(screen.getByTestId("device-status-phone")).toHaveTextContent("TX DISC");
+    expect(screen.getByTestId("device-status-homeRouter")).toHaveTextContent("RX DISC");
+    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[phone] DHCPDISCOVER -> broadcast");
   });
 
   it("restarts the selected protocol when play is clicked again", () => {
@@ -119,8 +122,8 @@ describe("NetworkWindow", () => {
 
     click(screen.getByTestId("network-play"));
 
-    expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("ARP");
+    expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "1-2");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("DISC");
   });
 
   it("interrupts the current protocol when switching to another one", () => {
@@ -130,22 +133,22 @@ describe("NetworkWindow", () => {
 
     advance(300);
 
-    changeStory("web");
+    changeStory("nat");
 
-    expect(screen.getByText("Generic web traffic leaves the LAN")).toBeInTheDocument();
+    expect(screen.getByText("NAT translates the inside host")).toBeInTheDocument();
     expect(screen.getByText("Web router")).toBeInTheDocument();
     expect(screen.queryByTestId("active-packet")).not.toBeInTheDocument();
 
     click(screen.getByTestId("network-play"));
 
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("GET");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("IN");
   });
 
   it("runs one slow pass and stops on the final frame", () => {
     render(<NetworkWindow />);
 
-    changeStory("web");
+    changeStory("nat");
     click(screen.getByTestId("network-play"));
 
     let reachedFinalFrame = false;
@@ -157,7 +160,7 @@ describe("NetworkWindow", () => {
       const coord = packet.getAttribute("data-coord");
       const label = screen.getByTestId("active-packet-label").textContent ?? "";
 
-      if (coord === "2-1" && label === "HTML") {
+      if (coord === "2-1" && label === "MAP") {
         reachedFinalFrame = true;
         break;
       }
@@ -165,44 +168,44 @@ describe("NetworkWindow", () => {
 
     expect(reachedFinalFrame).toBe(true);
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("HTML");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("MAP");
 
     advance(1200);
 
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("HTML");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("MAP");
   });
 
   it("advances one frame at a time with the next button", () => {
     setViewportWidth(1280);
     render(<NetworkWindow />);
 
-    changeStory("web");
+    changeStory("nat");
 
     click(screen.getByTestId("network-step"));
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("GET");
-    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[pc] GET targets an off-subnet host");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("IN");
+    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[pc] private source enters the router");
 
     click(screen.getByTestId("network-step"));
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "0-1");
     expect(screen.getByTestId("active-packet-label")).toHaveTextContent("NAT");
-    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[router] sends it to the next hop");
+    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[router] translates to a public address");
 
     click(screen.getByTestId("network-step"));
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "0-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("200");
-    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[web] upstream routing continues");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("OUT");
+    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[upstream] sees the translated source");
 
     click(screen.getByTestId("network-step"));
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("HTML");
-    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[web] upstream routing continues");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("MAP");
+    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[upstream] sees the translated source");
 
     click(screen.getByTestId("network-step"));
     expect(screen.getByTestId("active-packet")).toHaveAttribute("data-coord", "2-1");
-    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("GET");
-    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[pc] GET targets an off-subnet host");
+    expect(screen.getByTestId("active-packet-label")).toHaveTextContent("IN");
+    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[pc] private source enters the router");
   });
 
   it("falls back to shorter terminal explanations when the panel is tight", () => {
@@ -211,17 +214,17 @@ describe("NetworkWindow", () => {
 
     click(screen.getByTestId("network-play"));
 
-    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[pc] who-has 192.168.10.1?");
+    expect(screen.getByTestId("active-terminal-line")).toHaveTextContent("[phone] DHCPDISCOVER -> broadcast");
     expect(screen.getByTestId("active-terminal-line").textContent).not.toContain("This opening step shows");
   });
 
   it("restores the last selected protocol from storage", () => {
-    window.localStorage.setItem("ipagme-network-window", JSON.stringify({ selectedStoryId: "web" }));
+    window.localStorage.setItem("ipagme-network-window", JSON.stringify({ selectedStoryId: "nat" }));
 
     render(<NetworkWindow />);
 
-    expect(screen.getByRole("combobox", { name: "Protocol story" })).toHaveValue("web");
-    expect(screen.getByText("Generic web traffic leaves the LAN")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Protocol story" })).toHaveValue("nat");
+    expect(screen.getByText("NAT translates the inside host")).toBeInTheDocument();
     expect(screen.getByText("Web router")).toBeInTheDocument();
     expect(screen.getByText("Phone")).toBeInTheDocument();
   });

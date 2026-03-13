@@ -6,11 +6,16 @@ import type { AnswerResult, CalculatorResult, Difficulty, HelperTab, PowerTableR
 import { CcnaCompareCard } from "@/components/CcnaCompareCard";
 import { CcnaQuickRefCard } from "@/components/CcnaQuickRefCard";
 import { IpTermsCard } from "@/components/IpTermsCard";
+import { OsiTcpModelCard } from "@/components/OsiTcpModelCard";
 import { makeScoreIncrement, nextSeed } from "@/app/utils";
 import { PowerTableCard } from "@/components/PowerTableCard";
 import { NetworkWindow } from "@/components/NetworkWindow";
 import { QuizCard } from "@/components/QuizCard";
+import { RoutingStudyCard } from "@/components/RoutingStudyCard";
+import { SecurityServicesCard } from "@/components/SecurityServicesCard";
+import { SwitchingControlCard } from "@/components/SwitchingControlCard";
 import { ToolPanel } from "@/components/ToolPanel";
+import { WanTechCard } from "@/components/WanTechCard";
 import { calculateSubnet, evaluateAnswer, generateQuestion, getPowerTable } from "@/wasm/subnetEngine";
 
 function initialStats() {
@@ -222,6 +227,11 @@ export function App() {
             <IpTermsCard question={question} />
             <CcnaQuickRefCard />
             <CcnaCompareCard />
+            <OsiTcpModelCard />
+            <RoutingStudyCard question={question} />
+            <SwitchingControlCard />
+            <SecurityServicesCard />
+            <WanTechCard />
           </section>
         </main>
       </div>

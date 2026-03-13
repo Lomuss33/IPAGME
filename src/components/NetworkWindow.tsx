@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
-import { defaultNetworkStoryId, networkStories, networkStoryCategories } from "@/app/networkStories";
+import { defaultNetworkStoryId, networkWindowStories, networkWindowStoryCategories } from "@/app/networkStories";
 import { loadSelectedNetworkStory, saveSelectedNetworkStory } from "@/app/storage";
 import type { NetworkGridCell, NetworkSegment, NetworkStory } from "@/app/types";
 
@@ -19,7 +19,7 @@ const SEGMENT_DELAY_MS = 760;
 const LONG_TERMINAL_COPY_MIN_WIDTH = 1040;
 
 function findStory(storyId: NetworkStory["id"]) {
-  return networkStories.find((story) => story.id === storyId) ?? networkStories[0];
+  return networkWindowStories.find((story) => story.id === storyId) ?? networkWindowStories[0];
 }
 
 function keyForCell(cell: NetworkGridCell) {
@@ -90,10 +90,10 @@ export function NetworkWindow() {
   const boardCells = useMemo(() => buildBoardCells(), []);
   const storyGroups = useMemo(
     () =>
-      networkStoryCategories
+      networkWindowStoryCategories
         .map((category) => ({
           ...category,
-          stories: networkStories.filter((story) => story.category === category.id),
+          stories: networkWindowStories.filter((story) => story.category === category.id),
         }))
         .filter((group) => group.stories.length > 0),
     [],
@@ -236,7 +236,7 @@ export function NetworkWindow() {
           <div className="network-window__footer">
             <div className="network-window__storybar">
               <label className="network-window__storybar-label" htmlFor="network-story-select">
-                Protocol
+                Protocol flow
               </label>
               <select
                 id="network-story-select"

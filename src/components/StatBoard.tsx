@@ -17,26 +17,29 @@ const statMeta = [
 
 export function StatBoard({ stats, status, onDifficultyChange, embedded = false }: StatBoardProps) {
   const accuracy = getAccuracy(stats);
+  const showHeader = !embedded;
 
   return (
     <section className={`hud-panel ${embedded ? "hud-panel--embedded" : ""}`}>
-      <div className="hud-panel__header">
-        <div className="hud-panel__lead">
-          <div className="status-pill status-pill--compact">{status}</div>
+      {showHeader ? (
+        <div className="hud-panel__header">
+          <div className="hud-panel__lead">
+            <div className="status-pill status-pill--compact">{status}</div>
+          </div>
+          <div className="difficulty-picker" aria-label="Difficulty picker">
+            {Object.entries(difficultyLabels).map(([value, label]) => (
+              <button
+                key={value}
+                className={`chip ${stats.difficulty === value ? "chip--active" : ""}`}
+                type="button"
+                onClick={() => onDifficultyChange(value as Difficulty)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="difficulty-picker" aria-label="Difficulty picker">
-          {Object.entries(difficultyLabels).map(([value, label]) => (
-            <button
-              key={value}
-              className={`chip ${stats.difficulty === value ? "chip--active" : ""}`}
-              type="button"
-              onClick={() => onDifficultyChange(value as Difficulty)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
+      ) : null}
       <div className="stat-grid">
         {statMeta.map((item) => {
           const value =

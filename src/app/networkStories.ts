@@ -1,7 +1,7 @@
 import type { NetworkGridCell, NetworkNodeBubble, NetworkSegment, NetworkStory, NetworkStoryCategory, NetworkStoryId } from "@/app/types";
 
-export const defaultNetworkStoryId: NetworkStoryId = "arp";
-export const networkStoryCategories: { id: NetworkStoryCategory; label: string }[] = [
+export const defaultNetworkStoryId: NetworkStoryId = "dhcp";
+const networkStoryCategories: { id: NetworkStoryCategory; label: string }[] = [
   { id: "core", label: "Core" },
   { id: "transport", label: "Transport" },
   { id: "switching", label: "Switching" },
@@ -732,3 +732,27 @@ export const networkStories: NetworkStory[] = [
     ],
   ),
 ];
+
+const networkWindowStoryIds: NetworkStoryId[] = [
+  "dhcp",
+  "dns",
+  "nat",
+  "tcp",
+  "udp",
+  "ssh",
+  "https",
+  "tftp",
+  "dot1q",
+  "stp",
+  "lacp",
+  "ospf",
+  "ipsec",
+];
+
+export const networkWindowStories = networkWindowStoryIds
+  .map((storyId) => networkStories.find((story) => story.id === storyId))
+  .filter((story): story is NetworkStory => Boolean(story));
+
+export const networkWindowStoryCategories = networkStoryCategories.filter((category) =>
+  networkWindowStories.some((story) => story.category === category.id),
+);

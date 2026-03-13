@@ -1,6 +1,7 @@
 import type { KeyboardEvent } from "react";
 import type { AnswerResult, Difficulty, QuizQuestion, SessionStats } from "@/app/types";
 import { messages } from "@/app/messages";
+import { difficultyLabels } from "@/app/utils";
 import { StatBoard } from "@/components/StatBoard";
 
 interface QuizCardProps {
@@ -35,7 +36,22 @@ export function QuizCard({
   return (
     <section className="quiz-card">
       <div className="quiz-card__titlebar">
-        <h2>Main quiz</h2>
+        <div className="quiz-card__titlebar-main">
+          <h2>Main quiz</h2>
+          <div className="status-pill status-pill--compact">{status}</div>
+        </div>
+        <div className="difficulty-picker" aria-label="Difficulty picker">
+          {Object.entries(difficultyLabels).map(([value, label]) => (
+            <button
+              key={value}
+              className={`chip ${stats.difficulty === value ? "chip--active" : ""}`}
+              type="button"
+              onClick={() => onDifficultyChange(value as Difficulty)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <StatBoard stats={stats} status={status} onDifficultyChange={onDifficultyChange} embedded />

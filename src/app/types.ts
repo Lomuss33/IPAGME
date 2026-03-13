@@ -1,4 +1,5 @@
 export type AddressFamily = "ipv4" | "ipv6";
+export type AppPage = "subnet" | "guide";
 export type Difficulty = "easy" | "medium" | "hard" | "mixed";
 export type HelperTab = "visualizer" | "calculator";
 export type NetworkStoryCategory = "core" | "transport" | "switching" | "routing" | "security";
